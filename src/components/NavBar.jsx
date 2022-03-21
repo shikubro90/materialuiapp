@@ -1,4 +1,4 @@
-import React from 'react'
+import{ React ,useState } from 'react'
 import {AppBar, Toolbar, Typography, InputBase, alpha, Avatar} from '@mui/material/'
 import {makeStyles} from '@mui/styles'
 import { Search } from '@mui/icons-material'
@@ -6,17 +6,13 @@ import MailIcon from '@mui/icons-material/Mail'
 import Badge from '@mui/material/Badge'
 import Notification from '@mui/icons-material/Notifications'
 import avatar from '../img/avatar.png'
-
-
 const  useStyles = makeStyles(theme=>(
     {
-
         toolbar :{
             display : 'flex', 
             justifyContent : 'space-between'
         },
         logoLg : {
-            
             display : 'none',
             [theme.breakpoints.up('sm')] : {
                 display : 'block'
@@ -35,49 +31,44 @@ const  useStyles = makeStyles(theme=>(
             '&:hover': {
             backgroundColor: alpha(theme.palette.common.white, 0.25),
             },
-
             borderRadius : theme.shape.borderRadius,
             padding : 5,
             color: "white",
             width : '50%',
             [theme.breakpoints.down('sm')] : {
-                display : 'none'
+                display : (props) => (props.open? "flex" : "none")
             }
-        }, 
-
+        },
         input : {
             color : "white",
             marginLeft : theme.spacing(2)
         }, 
-
         icons : {
             display : 'flex',
             alignItems : 'center',
         }, 
-
         badge : {
             marginRight : theme.spacing(2)
         },
-
         searchButton : {
+            marginRight : theme.spacing(2),
             color : '#fff',
-            [theme.breakpoints.up('sm')]: {
-                display : 'none'
-            }
+            [theme.breakpoints.up("sm")] : {
+                display : 'none',
+            },
         }
-
     }
 ))
-
 const NavBar = () => {
-
-    const classes = useStyles()
+    
+    const [open, setOpen] = useState(false);
+    const classes = useStyles({open})
 
   return (
     <div>
         <AppBar>
             <Toolbar className={classes.toolbar}>
-                <Typography variant='h3' className={classes.logoLg} >
+                <Typography variant='h3' className={classes.logoLg}>
                     Nav Bar
                 </Typography>
 
@@ -85,16 +76,18 @@ const NavBar = () => {
                     Nav Bar
                 </Typography>
 
-
                 <div className={classes.search}>
                     <Search/>
                     <InputBase placeholder='Search...'  className={classes.input}/>
                 </div>
 
-                <Search className={classes.searchButton}/>
-
-
                 <div className={classes.icons}>
+
+                    <Search className={classes.searchButton} onClick={(props)=>{
+                        setOpen(true)
+                        
+                    }} />
+                    
                     <Badge badgeContent={4} color="secondary" className={classes.badge}>
                         <MailIcon/>
                     </Badge>
@@ -103,7 +96,6 @@ const NavBar = () => {
                     </Badge>
                     <Avatar  alt='avatar' src={avatar} />
                 </div>
-
             </Toolbar>
         </AppBar>
     </div>
